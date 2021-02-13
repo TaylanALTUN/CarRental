@@ -8,11 +8,11 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.InMemory
 {
-    public class InMemoryCarDAL:ICarDAL
+    public class InMemoryCarDal:ICarDal
     {
         private List<Car> _cars;
 
-        public InMemoryCarDAL()
+        public InMemoryCarDal()
         {
             _cars = new List<Car>
             {

@@ -9,9 +9,9 @@ namespace Business.Concrete
 {
     public class CarManager:ICarService
     {
-        private ICarDAL _carDal;
+        private ICarDal _carDal;
 
-        public CarManager(ICarDAL carDal)
+        public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
@@ -28,7 +28,19 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
+            if (car.Name.Length <= 2)
+            {
+                Console.WriteLine("Araba ismi minimum 2 karakter olmalıdır");
+                return;
+            }
+            if (car.DailyPrice <= 0)
+            {
+                Console.WriteLine("Araba günlük fiyatı 0'dan büyük olmalıdır");
+                return;
+            }
+
             _carDal.Add(car);
+            Console.WriteLine("Kayıt başarılı");
         }
 
         public void Update(Car car)
@@ -39,6 +51,16 @@ namespace Business.Concrete
         public void Delete(Car car)
         {
             _carDal.Delete(car);
+        }
+
+        public List<Car> GetCarsByBrandId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Car> GetCarsByColorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
