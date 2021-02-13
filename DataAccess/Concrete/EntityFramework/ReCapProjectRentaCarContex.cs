@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    class ReCapProjectRentaCarContex:DbContext
+    public class ReCapProjectRentaCarContex:DbContext
     {
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -4,6 +4,7 @@ using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace ConsoleUI
 {
@@ -25,29 +26,54 @@ namespace ConsoleUI
             //AddAndListBrand();
 
             CarManager carManager = new CarManager(new EfCarDal());
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
 
-            AddCar(carManager, new Car
-            {
-                Name = "İl",
-                BrandId = 1,
-                ColorId = 1,
-                DailyPrice = 0,
-                Description = "Kontrol amaçlı girilmiştir.",
-                ModelYear = 2021,
-            });
 
-            AddCar(carManager, new Car
-            {
-                Name = "İlk araba",
-                BrandId = 1,
-                ColorId = 1,
-                DailyPrice = 200,
-                Description = "Kontrol amaçlı girilmiştir.",
-                ModelYear = 2021,
-            });
+            //AddCar(carManager, new Car
+            //{
+            //    Name = "İl",
+            //    BrandId = 1,
+            //    ColorId = 1,
+            //    DailyPrice = 0,
+            //    Description = "Kontrol amaçlı girilmiştir.",
+            //    ModelYear = 2021,
+            //});
 
 
 
+            //AddBrand(brandManager,new Brand
+            //{
+            //    Name = "Porsche"
+            //});
+
+            //AddColor(colorManager,new Color
+            //{
+            //    Name = "Mat Siyag"
+            //});
+
+
+            //AddCar(carManager, new Car
+            //{
+            //    Name = "Araba 3",
+            //    BrandId = 3,
+            //    ColorId = 2,
+            //    DailyPrice = 200,
+            //    Description = "Açıklama 3",
+            //    ModelYear = 2021,
+            //});
+
+            //AddCar(carManager, new Car
+            //{
+            //    Name = "Araba 4",
+            //    BrandId = 2,
+            //    ColorId = 3,
+            //    DailyPrice = 200,
+            //    Description = "Açıklama 3",
+            //    ModelYear = 2021,
+            //});
+
+            GetCarDetails(carManager);
         }
 
         private static void AddCar(CarManager carManager, Car car)
@@ -62,6 +88,33 @@ namespace ConsoleUI
                 ModelYear = car.ModelYear,
             });
         }
+
+        private static void AddColor(ColorManager colorManager, Color color)
+        {
+            colorManager.Add(new Color
+            {
+                Name = color.Name,
+            });
+        }
+
+        private static void AddBrand(BrandManager brandManager, Brand brand)
+        {
+            brandManager.Add(new Brand
+            {
+                Name = brand.Name,
+            });
+        }
+
+        private static void GetCarDetails(CarManager carManager)
+        {
+            List<CarDetailsDto> carDetailsDtos = carManager.GetCarDetails();
+            foreach (var item in carDetailsDtos)
+            {
+                Console.WriteLine(string.Format(" Araba Adı:{0} Modeli: {1}  Rengi: {2},  Günlük Kirası: {3} ", item.CarName,item.BrandName,item.ColorName,item.DailyPrice));
+            }
+
+        }
+
 
         private static void AddAndListBrand()
         {
