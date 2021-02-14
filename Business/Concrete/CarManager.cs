@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,56 +19,116 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
-        }
-
-        public List<Car> GetById(int id)
-        {
-            return _carDal.GetAll(c => c.Id == id);
-        }
-
-        public void Add(Car car)
-        {
-            if (car.Name.Length <= 2)
+            try
             {
-                Console.WriteLine("Araba ismi minimum 2 karakter olmalıdır");
-                return;
+                return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
             }
-            if (car.DailyPrice <= 0)
+            catch
             {
-                Console.WriteLine("Araba günlük fiyatı 0'dan büyük olmalıdır");
-                return;
+                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
+            }
+        }
+
+        public IDataResult<List<Car>> GetById(int id)
+        {
+            try
+            {
+                return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == id), Messages.CarListed);
+            }
+            catch
+            {
+                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
             }
 
-            _carDal.Add(car);
-            Console.WriteLine("Kayıt başarılı");
         }
 
-        public void Update(Car car)
+        public IResult Add(Car car)
         {
-            _carDal.Update(car);
+            try
+            {
+                if (car.Name.Length <= 2)
+                {
+                    return new ErrorResult(Messages.CarNameLengthMustBeMinimumTwo);
+                }
+                else if (car.DailyPrice <= 0)
+                {
+                    return new ErrorResult(Messages.CarDailyPriceMustBeMoreThanZero);
+                }
+
+                _carDal.Add(car);
+                return new SuccessResut(Messages.CarAdded);
+
+            }
+            catch
+            {
+                return new ErrorResult(Messages.CarCantAdd);
+            }
         }
 
-        public void Delete(Car car)
+        public IResult Update(Car car)
         {
-            _carDal.Delete(car);
+            try
+            {
+                _carDal.Update(car);
+                return new SuccessResut(Messages.CarUpdated);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.CarCantUpdate);
+            }
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IResult Delete(Car car)
         {
-            return _carDal.GetAll(c => c.BrandId == id);
+            try
+            {
+                _carDal.Delete(car);
+                return new SuccessResut(Messages.CarDeleted);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.CardCantDelete);
+            }
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return _carDal.GetAll(c => c.ColorId == id);
+            try
+            {
+                return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id), Messages.CarListed);
+            }
+            catch
+            {
+                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
+            }
         }
 
-        public List<CarDetailsDto> GetCarDetails()
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetCarDetails();
+            try
+            {
+                return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarListed);
+            }
+            catch
+            {
+                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
+            }
+        }
+
+        public IDataResult<List<CarDetailsDto>> GetCarDetails()
+        {
+            try
+            {
+                return new SuccessDataResult<List<CarDetailsDto>>(_carDal.GetCarDetails(), Messages.CarListed);
+            }
+            catch
+            {
+                return new ErrorDataResult<List<CarDetailsDto>>(Messages.CarCantList);
+            }
         }
     }
 }

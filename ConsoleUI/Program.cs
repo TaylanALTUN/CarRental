@@ -21,9 +21,6 @@ namespace ConsoleUI
             //    Console.WriteLine(getCarsResult);
             //}
 
-            //AddAndListColor();
-
-            //AddAndListBrand();
 
             CarManager carManager = new CarManager(new EfCarDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
@@ -107,57 +104,12 @@ namespace ConsoleUI
 
         private static void GetCarDetails(CarManager carManager)
         {
-            List<CarDetailsDto> carDetailsDtos = carManager.GetCarDetails();
+            List<CarDetailsDto> carDetailsDtos = carManager.GetCarDetails().Data;
             foreach (var item in carDetailsDtos)
             {
                 Console.WriteLine(string.Format(" Araba Adı:{0} Modeli: {1}  Rengi: {2},  Günlük Kirası: {3} ", item.CarName,item.BrandName,item.ColorName,item.DailyPrice));
             }
 
-        }
-
-
-        private static void AddAndListBrand()
-        {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            string[] brands = new[] {"Audi", "BMW", "Chevrolet", "Hyundai", "Lamborghini", "Mercedes-Benz", "Nissan", "Opel"};
-
-            foreach (var brand in brands)
-            {
-                brandManager.Add(new Brand
-                {
-                    Name = brand
-                });
-            }
-
-            Console.WriteLine("Markalar --------------------------------------------------------------");
-            List<Brand> branList = brandManager.GetAll();
-
-            foreach (var brand in branList)
-            {
-                Console.WriteLine(brand.Name);
-            }
-        }
-
-        private static void AddAndListColor()
-        {
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-            string[] colors = new[] {"Kırmızı", "Mavi", "Siyah"};
-
-            foreach (var color in colors)
-            {
-                colorManager.Add(new Color
-                {
-                    Name = color
-                });
-            }
-
-            Console.WriteLine("Renkler --------------------------------------------------------------");
-            List<Color> colorList = colorManager.GetAll();
-
-            foreach (var color in colorList)
-            {
-                Console.WriteLine(color.Name);
-            }
         }
     }
 }

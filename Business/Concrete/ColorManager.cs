@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -15,29 +17,73 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            try
+            {
+                return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ColorListed);
+            }
+            catch
+            {
+                return new ErrorDataResult<List<Color>>(Messages.ColorCantList);
+            }
         }
 
-        public List<Color> GetById(int id)
+        public IDataResult<List<Color>> GetById(int id)
         {
-            return _colorDal.GetAll(c => c.Id == id);
+            try
+            {
+                return new SuccessDataResult<List<Color>>(_colorDal.GetAll(c => c.Id == id), Messages.CarListed);
+            }
+            catch
+            {
+                return new ErrorDataResult<List<Color>>(Messages.ColorCantList);
+            }
+
         }
 
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
-            _colorDal.Add(color);
+            try
+            {
+                _colorDal.Add(color);
+                return new SuccessResut(Messages.ColorAdded);
+
+            }
+            catch
+            {
+                return new ErrorResult(Messages.ColorCantAdd);
+            }
+
+
         }
 
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
-            _colorDal.Update(color);
+            try
+            {
+                _colorDal.Update(color);
+                return new SuccessResut(Messages.ColorUpdated);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.ColorCantUpdate);
+            }
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
-            _colorDal.Delete(color);
+            try
+            {
+                _colorDal.Delete(color);
+                return new SuccessResut(Messages.ColorDeleted);
+            }
+            catch
+            {
+
+                return new ErrorResult(Messages.ColorCantDelete);
+            }
         }
     }
 }
