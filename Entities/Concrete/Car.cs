@@ -15,10 +15,5 @@ namespace Entities.Concrete
         public int ModelYear { get; set; }
         public decimal DailyPrice { get; set; }
         public string Description { get; set; }
-
-        public static explicit operator Car(Expression<Func<Car, bool>> v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

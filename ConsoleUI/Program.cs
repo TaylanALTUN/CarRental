@@ -12,65 +12,80 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //CarManager carManager = new CarManager(new InMemoryCarDal());
-            //string getCarsResult = "";
-            //foreach (var car in carManager.GetAll())
-            //{
-            //    getCarsResult = string.Format(" Araba Modeli: {0}  Rengi: {1}, Modeli: {2}, Açıklaması: {3}, Günlük Kirası: {4} ", car.BrandId, car.ColorId, car.ModelYear, car.Description,car.DailyPrice);
-
-            //    Console.WriteLine(getCarsResult);
-            //}
-
-
             CarManager carManager = new CarManager(new EfCarDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            UserManager userManager = new UserManager(new EfUserDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
+            //AddUser(userManager);
+            //ListUsers(userManager);
+            //AddCustomer(customerManager);
+            //ListCustomerDetails(customerManager);
 
-            //AddCar(carManager, new Car
+            //Rental rental = new Rental { CarId = 1, CustomerId = 1, RentDate = DateTime.Now };
+            ////Console.WriteLine(rentalManager.RentaCar(rental).Message);
+            //rental.Id = 1;
+            //rental.ReturnDate=DateTime.Now;
+            //Console.WriteLine(rentalManager.ReturnaCar(rental).Message);
+            
+            //Rental rental2 = new Rental { CarId = 1, CustomerId = 1, RentDate = DateTime.Now };
+            //Console.WriteLine(rentalManager.RentaCar(rental2).Message);
+            //rental2.ReturnDate = DateTime.Now;
+            //Console.WriteLine(rentalManager.ReturnaCar(rental2).Message);
+
+            //Rental rental3 = new Rental { CarId = 4, CustomerId = 2, RentDate = DateTime.Now };
+            //Console.WriteLine(rentalManager.RentaCar(rental3).Message);
+            //Console.WriteLine(rentalManager.ReturnaCar(rental3).Message);
+
+            //foreach (var rentalDetail in rentalManager.GetAll().Data)
             //{
-            //    Name = "İl",
-            //    BrandId = 1,
-            //    ColorId = 1,
-            //    DailyPrice = 0,
-            //    Description = "Kontrol amaçlı girilmiştir.",
-            //    ModelYear = 2021,
-            //});
+            //    Console.WriteLine("{0} - {1} - {2} - {3}", rentalDetail.CarName, rentalDetail.CustomerName, rentalDetail.RentDate, rentalDetail.ReturnDate);
+            //}
 
 
-
-            //AddBrand(brandManager,new Brand
-            //{
-            //    Name = "Porsche"
-            //});
-
-            //AddColor(colorManager,new Color
-            //{
-            //    Name = "Mat Siyag"
-            //});
+        }
 
 
-            //AddCar(carManager, new Car
-            //{
-            //    Name = "Araba 3",
-            //    BrandId = 3,
-            //    ColorId = 2,
-            //    DailyPrice = 200,
-            //    Description = "Açıklama 3",
-            //    ModelYear = 2021,
-            //});
+        private static void ListCustomerDetails(CustomerManager customerManager)
+        {
+            foreach (var item in customerManager.GetAll().Data)
+            {
+                Console.WriteLine(string.Format(" Kullanıcı AdSoyad:{0} Müşteri Ad: {1}", item.UserName,
+                    item.CompanyName));
+            }
+        }
 
-            //AddCar(carManager, new Car
-            //{
-            //    Name = "Araba 4",
-            //    BrandId = 2,
-            //    ColorId = 3,
-            //    DailyPrice = 200,
-            //    Description = "Açıklama 3",
-            //    ModelYear = 2021,
-            //});
+        private static void AddCustomer(CustomerManager customerManager)
+        {
+            customerManager.Add(new Customer
+            {
+                UserId = 2,
+                CompanyName = "Company2"
+            });
+        }
 
-            GetCarDetails(carManager);
+        private static void ListUsers(UserManager userManager)
+        {
+            foreach (var item in userManager.GetAll().Data)
+            {
+                Console.WriteLine(string.Format(" Kullanıcı AdSoyad:{0} {1} E-Mail: {2}  Şifre: {3}", item.FirstName,
+                    item.LastName, item.Email, item.Password));
+            }
+        }
+
+        private static void AddUser(UserManager userManager)
+        {
+            var result=userManager.Add(new User
+            {
+                FirstName = "Taylan",
+                LastName = "ALTUN",
+                Email = "taylan.altun@gmail.com",
+                Password = "****"
+            });
+
+            Console.WriteLine(result.Message);
         }
 
         private static void AddCar(CarManager carManager, Car car)
