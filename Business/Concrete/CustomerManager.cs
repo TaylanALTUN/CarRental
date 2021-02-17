@@ -51,7 +51,7 @@ namespace Business.Concrete
                 return new SuccessResut(Messages.CustomerAdded);
 
             }
-            catch
+            catch (Exception exception)
             {
                 return new ErrorResult(Messages.CustomerCantAdd);
             }

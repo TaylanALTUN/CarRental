@@ -23,6 +23,7 @@ namespace DataAccess.Concrete.EntityFramework
                         on r.CustomerId equals cs.Id
                              select new RentalDetailsDto
                              {
+                                 Id = r.Id,
                                  CarName = cr.Name,
                                  CustomerName = cs.CompanyName,
                                  RentDate = r.RentDate,

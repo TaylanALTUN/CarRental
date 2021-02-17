@@ -30,11 +30,23 @@ namespace Business.Concrete
             }
         }
 
+        public IDataResult<User> Get(User user)
+        {
+            try
+            {
+                return new SuccessDataResult<User>(_userDal.Get(u => (u.FirstName== user.FirstName && u.LastName==user.LastName) || u.Email==user.Email ), Messages.UserListed);
+            }
+            catch (Exception exception)
+            {
+                return new ErrorDataResult<User>(Messages.UserCantList);
+            }
+        }
+
         public IDataResult<List<User>> GetById(int id)
         {
             try
             {
-                return new SuccessDataResult<List<User>>(_userDal.GetAll(c => c.Id == id), Messages.UserListed);
+                return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Id == id), Messages.UserListed);
             }
             catch
             {
@@ -50,7 +62,7 @@ namespace Business.Concrete
                 return new SuccessResut(Messages.UserAdded);
 
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
                 return new ErrorResult(Messages.UserCantAdd);
             }
@@ -63,7 +75,7 @@ namespace Business.Concrete
                 _userDal.Update(user);
                 return new SuccessResut(Messages.UserUpdated);
             }
-            catch
+            catch (Exception exception)
             {
 
                 return new ErrorResult(Messages.UserCantUpdate);
@@ -83,5 +95,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.UserCantDelete);
             }
         }
+
+       
     }
 }
