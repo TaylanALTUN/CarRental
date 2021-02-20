@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    public class UserManager:IUserService
+    public class UserManager : IUserService
     {
         private IUserDal _userDal;
 
@@ -20,82 +23,40 @@ namespace Business.Concrete
 
         public IDataResult<List<User>> GetAll()
         {
-            try
-            {
-                return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UserListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<User>>(Messages.UserCantList);
-            }
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UserListed);
         }
 
         public IDataResult<User> Get(User user)
         {
-            try
-            {
-                return new SuccessDataResult<User>(_userDal.Get(u => (u.FirstName== user.FirstName && u.LastName==user.LastName) || u.Email==user.Email ), Messages.UserListed);
-            }
-            catch (Exception exception)
-            {
-                return new ErrorDataResult<User>(Messages.UserCantList);
-            }
+            return new SuccessDataResult<User>(_userDal.Get(u => (u.FirstName == user.FirstName && u.LastName == user.LastName) || u.Email == user.Email), Messages.UserListed);
         }
 
         public IDataResult<List<User>> GetById(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Id == id), Messages.UserListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<User>>(Messages.UserCantList);
-            }
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Id == id), Messages.UserListed);
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
-            try
-            {
-                _userDal.Add(user);
-                return new SuccessResut(Messages.UserAdded);
+            //ValidationTool.Validate(new UserValidator(), user);
 
-            }
-            catch (Exception exception)
-            {
-                return new ErrorResult(Messages.UserCantAdd);
-            }
+            _userDal.Add(user);
+            return new SuccessResut(Messages.UserAdded);
         }
 
         public IResult Update(User user)
         {
-            try
-            {
-                _userDal.Update(user);
-                return new SuccessResut(Messages.UserUpdated);
-            }
-            catch (Exception exception)
-            {
-
-                return new ErrorResult(Messages.UserCantUpdate);
-            }
+            _userDal.Update(user);
+            return new SuccessResut(Messages.UserUpdated);
         }
 
         public IResult Delete(User user)
         {
-            try
-            {
-                _userDal.Delete(user);
-                return new SuccessResut(Messages.UserDeleted);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.UserCantDelete);
-            }
+            _userDal.Delete(user);
+            return new SuccessResut(Messages.UserDeleted);
         }
 
-       
+
     }
 }

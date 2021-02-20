@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    public class ColorManager :IColorService
+    public class ColorManager : IColorService
     {
         private IColorDal _colorDal;
 
@@ -19,71 +22,33 @@ namespace Business.Concrete
         }
         public IDataResult<List<Color>> GetAll()
         {
-            try
-            {
-                return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ColorListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Color>>(Messages.ColorCantList);
-            }
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ColorListed);
         }
 
         public IDataResult<List<Color>> GetById(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<Color>>(_colorDal.GetAll(c => c.Id == id), Messages.CarListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Color>>(Messages.ColorCantList);
-            }
-
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(c => c.Id == id), Messages.CarListed);
         }
 
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Color color)
         {
-            try
-            {
-                _colorDal.Add(color);
-                return new SuccessResut(Messages.ColorAdded);
+            //ValidationTool.Validate(new ColorValidator(), color);
 
-            }
-            catch
-            {
-                return new ErrorResult(Messages.ColorCantAdd);
-            }
-
-
+            _colorDal.Add(color);
+            return new SuccessResut(Messages.ColorAdded);
         }
 
         public IResult Update(Color color)
         {
-            try
-            {
-                _colorDal.Update(color);
-                return new SuccessResut(Messages.ColorUpdated);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.ColorCantUpdate);
-            }
+            _colorDal.Update(color);
+            return new SuccessResut(Messages.ColorUpdated);
         }
 
         public IResult Delete(Color color)
         {
-            try
-            {
-                _colorDal.Delete(color);
-                return new SuccessResut(Messages.ColorDeleted);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.ColorCantDelete);
-            }
+            _colorDal.Delete(color);
+            return new SuccessResut(Messages.ColorDeleted);
         }
     }
 }

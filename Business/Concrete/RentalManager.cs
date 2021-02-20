@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -22,61 +25,28 @@ namespace Business.Concrete
 
         public IDataResult<List<RentalDetailsDto>> GetAll()
         {
-            try
-            {
-                return new SuccessDataResult<List<RentalDetailsDto>>(_rentalDal.GetRentalDetails(), Messages.RentalListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<RentalDetailsDto>>(Messages.RentalCantList);
-            }
+            return new SuccessDataResult<List<RentalDetailsDto>>(_rentalDal.GetRentalDetails(), Messages.RentalListed);
         }
 
         public IDataResult<List<Rental>> GetById(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.Id == id), Messages.RentalListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Rental>>(Messages.RentalCantList);
-            }
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.Id == id), Messages.RentalListed);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult RentaCar(Rental rental)
         {
-            try
+            if (IsCarAvailable(rental).Success)
             {
-                if (rental.ReturnDate != null)
-                {
-                    return new ErrorResult(Messages.RentalReturnDateNotNull);
-                }
-                else if (IsCarAvailable(rental).Success)
-                {
-                    _rentalDal.Add(rental);
-                    return new SuccessResut(Messages.RentalAdded);
-                }
-                else
-                {
-                    return new ErrorResult(Messages.RentalCarRented);
-                }
+                //ValidationTool.Validate(new RentalValidator(), rental);
+                _rentalDal.Add(rental);
+                return new SuccessResut(Messages.RentalAdded);
             }
-            catch
-            {
-                return new ErrorResult(Messages.RentalCantAdd);
-            }
+            return new ErrorResult(Messages.RentalCarRented);
         }
 
         public IResult ReturnaCar(Rental rental)
         {
-            try
-            {
-                if (rental.ReturnDate == null)
-                { 
-                    return new ErrorResult(Messages.RentalReturnDateIsNull);
-                }
-                
                 if (IsCarAvailable(rental).Success)
                 {
                     return new ErrorResult(Messages.RentalCarNotFound);
@@ -86,12 +56,6 @@ namespace Business.Concrete
                     _rentalDal.Update(rental);
                     return new SuccessResut(Messages.RentalUpdated);
                 }
-            }
-            catch (Exception ex)
-            {
-
-                return new ErrorResult(Messages.RentalCantUpdate);
-            }
         }
 
         public IResult IsCarAvailable(Rental rental)
@@ -109,16 +73,8 @@ namespace Business.Concrete
 
         public IResult DeleteRentalInfo(Rental rental)
         {
-            try
-            {
                 _rentalDal.Delete(rental);
                 return new SuccessResut(Messages.RentalDeleted);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.RentalCantDelete);
-            }
         }
 
     }

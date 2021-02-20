@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -10,7 +13,7 @@ using Entities.DTOs;
 
 namespace Business.Concrete
 {
-    public class CarManager:ICarService
+    public class CarManager : ICarService
     {
         private ICarDal _carDal;
 
@@ -21,114 +24,58 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            try
-            {
-                return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
-            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
 
         public IDataResult<List<Car>> GetById(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == id), Messages.CarListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
-            }
-
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == id), Messages.CarListed);
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            try
-            {
-                if (car.Name.Length <= 2)
-                {
-                    return new ErrorResult(Messages.CarNameLengthMustBeMinimumTwo);
-                }
-                else if (car.DailyPrice <= 0)
-                {
-                    return new ErrorResult(Messages.CarDailyPriceMustBeMoreThanZero);
-                }
+            //if (car.Name.Length <= 2)
+            //{
+            //    return new ErrorResult(Messages.CarNameLengthMustBeMinimumTwo);
+            //}
+            //else if (car.DailyPrice <= 0)
+            //{
+            //    return new ErrorResult(Messages.CarDailyPriceMustBeMoreThanZero);
+            //}
 
-                _carDal.Add(car);
-                return new SuccessResut(Messages.CarAdded);
+            //ValidationTool.Validate(new CarValidator(), car);
 
-            }
-            catch
-            {
-                return new ErrorResult(Messages.CarCantAdd);
-            }
+            _carDal.Add(car);
+            return new SuccessResut(Messages.CarAdded);
+
         }
 
         public IResult Update(Car car)
         {
-            try
-            {
-                _carDal.Update(car);
-                return new SuccessResut(Messages.CarUpdated);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.CarCantUpdate);
-            }
+            _carDal.Update(car);
+            return new SuccessResut(Messages.CarUpdated);
         }
 
         public IResult Delete(Car car)
         {
-            try
-            {
-                _carDal.Delete(car);
-                return new SuccessResut(Messages.CarDeleted);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.CardCantDelete);
-            }
+            _carDal.Delete(car);
+            return new SuccessResut(Messages.CarDeleted);
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id), Messages.CarListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
-            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id), Messages.CarListed);
         }
 
         public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Car>>(Messages.CarCantList);
-            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarListed);
         }
 
         public IDataResult<List<CarDetailsDto>> GetCarDetails()
         {
-            try
-            {
-                return new SuccessDataResult<List<CarDetailsDto>>(_carDal.GetCarDetails(), Messages.CarListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<CarDetailsDto>>(Messages.CarCantList);
-            }
+            return new SuccessDataResult<List<CarDetailsDto>>(_carDal.GetCarDetails(), Messages.CarListed);
         }
     }
 }

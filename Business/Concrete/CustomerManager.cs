@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -10,7 +13,7 @@ using Entities.DTOs;
 
 namespace Business.Concrete
 {
-    public class CustomerManager:ICustomerService
+    public class CustomerManager : ICustomerService
     {
         private ICustomerDal _customerDal;
 
@@ -21,68 +24,33 @@ namespace Business.Concrete
 
         public IDataResult<List<CustomerDetailsDto>> GetAll()
         {
-            try
-            {
-                return new SuccessDataResult<List<CustomerDetailsDto>>(_customerDal.GetCustomerDetails(), Messages.CustomerListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<CustomerDetailsDto>>(Messages.CustomerCantList);
-            }
+            return new SuccessDataResult<List<CustomerDetailsDto>>(_customerDal.GetCustomerDetails(), Messages.CustomerListed);
         }
 
         public IDataResult<List<Customer>> GetById(int id)
         {
-            try
-            {
-                return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(c => c.Id == id), Messages.CustomerListed);
-            }
-            catch
-            {
-                return new ErrorDataResult<List<Customer>>(Messages.CustomerCantList);
-            }
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(c => c.Id == id), Messages.CustomerListed);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer customer)
         {
-            try
-            {
-                _customerDal.Add(customer);
-                return new SuccessResut(Messages.CustomerAdded);
+            //ValidationTool.Validate(new CustomerValidator(), customer);
 
-            }
-            catch (Exception exception)
-            {
-                return new ErrorResult(Messages.CustomerCantAdd);
-            }
+            _customerDal.Add(customer);
+            return new SuccessResut(Messages.CustomerAdded);
         }
 
         public IResult Update(Customer customer)
         {
-            try
-            {
-                _customerDal.Update(customer);
-                return new SuccessResut(Messages.CustomerUpdated);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.CustomerCantUpdate);
-            }
+            _customerDal.Update(customer);
+            return new SuccessResut(Messages.CustomerUpdated);
         }
 
         public IResult Delete(Customer customer)
         {
-            try
-            {
-                _customerDal.Delete(customer);
-                return new SuccessResut(Messages.CustomerDeleted);
-            }
-            catch
-            {
-
-                return new ErrorResult(Messages.CustomerCantDelete);
-            }
+            _customerDal.Delete(customer);
+            return new SuccessResut(Messages.CustomerDeleted);
         }
     }
 }
