@@ -92,15 +92,15 @@ namespace Business.Constants
         #endregion
 
         #region CarImage
-        public static string CarImageAdded = "Fotofraf Eklendi";
-        public static string ColoCarImageCantAdd = "Fotofraf Eklenemedi";
-        public static string CarImageUpdated = "Fotofraf Güncellendi";
-        public static string CarImageCantUpdate = "Fotofraf Güncellenemedi";
-        public static string CarImageDeleted = "Fotofraf Silindi";
-        public static string CarImageCantDelete = "Fotofraf Silinemedi";
-        public static string CarImageListed = "Fotofraf listelendi";
-        public static string CarImageCantList = "Fotofraf listelenemdi";
-        public static string CarImageCaountLimitFull = "Fotofraf ekleme limiti aşıldı.";
+        public static string CarImageAdded = "Fotoğraf Eklendi";
+        public static string ColoCarImageCantAdd = "Fotoğraf Eklenemedi";
+        public static string CarImageUpdated = "Fotoğraf Güncellendi";
+        public static string CarImageCantUpdate = "Fotoğraf Güncellenemedi";
+        public static string CarImageDeleted = "Fotoğraf Silindi";
+        public static string CarImageCantDelete = "Fotoğraf Silinemedi";
+        public static string CarImageListed = "Fotoğraf listelendi";
+        public static string CarImageCantList = "Fotoğraf listelenemdi";
+        public static string CarImageCaountLimitFull = "Fotoğraf ekleme limiti aşıldı.";
         #endregion
     }
 }

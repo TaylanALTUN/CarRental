@@ -9,11 +9,11 @@ using Entities.DTOs;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCustomerDal: EfEntityRepositoryBase<Customer, CarRentalContex>, ICustomerDal
+    public class EfCustomerDal: EfEntityRepositoryBase<Customer, CarRentalContext>, ICustomerDal
     {
         public List<CustomerDetailsDto> GetCustomerDetails()
         {
-            using (CarRentalContex context = new CarRentalContex())
+            using (CarRentalContext context = new CarRentalContext())
             {
                 var result = from c in context.Customers
                     join u in context.Users

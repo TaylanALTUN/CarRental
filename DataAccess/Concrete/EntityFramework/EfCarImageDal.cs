@@ -3,7 +3,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    class EfCarImageDal:EfEntityRepositoryBase<CarImage, CarRentalContex>
+    class EfCarImageDal:EfEntityRepositoryBase<CarImage, CarRentalContext>
     {
     }
 }

@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfRentalDal: EfEntityRepositoryBase<Rental, CarRentalContex>,IRentalDal
+    public class EfRentalDal: EfEntityRepositoryBase<Rental, CarRentalContext>,IRentalDal
     {
         public List<RentalDetailsDto> GetRentalDetails()
         {
-            using (CarRentalContex context = new CarRentalContex())
+            using (CarRentalContext context = new CarRentalContext())
             {
                 var result = from r in context.Rentals 
                     join cr in context.Cars 

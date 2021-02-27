@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
@@ -31,7 +33,15 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetById(int id)
         {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.Id == id), Messages.CarImageListed);
+            IResult result = BusinessRules.Run(GetDefaultIfImageIsEmpty(id));
+
+            if (result.Success)
+            {
+                return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.Id == id), Messages.CarImageListed);
+            }
+
+            return new ErrorDataResult<List<CarImage>>(result.Message);
+           
         }
 
 
@@ -83,11 +93,40 @@ namespace Business.Concrete
 
         private IResult CheckIfCarImageContLimit(int carid)
         {
-            var carImagecount = _carImageDal.GetAll(p => p.CarId == carid).Count;
+            var carImagecount = _carImageDal.GetAll(i => i.CarId == carid).Count;
 
             if (carImagecount >= 5)
             {
                 return new ErrorResult(Messages.CarImageCaountLimitFull);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult GetDefaultIfImageIsEmpty(int carid)
+        {
+            bool exists = _carImageDal.GetAll(i => i.CarId == carid).Any();
+
+            if (!exists)
+            {
+                try
+                {
+                    List<CarImage> carimage = new List<CarImage>();
+
+                    string filePath = Directory.GetCurrentDirectory();
+                    filePath = Path.Combine(filePath, "Upload", "Files");
+
+                    filePath = Path.Combine(filePath, "default.jpg");
+
+                    carimage.Add(new CarImage { CarId = carid, ImagePath = filePath, Date = DateTime.Now });
+
+                    return new SuccessDataResult<List<CarImage>>(carimage);
+                }
+                catch (Exception exception)
+                {
+                    return new ErrorResult(exception.Message); ;
+                }
+               
             }
 
             return new SuccessResult();
