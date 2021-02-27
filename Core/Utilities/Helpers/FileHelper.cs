@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace Core.Utilities.FileHelper
+namespace Core.Utilities.Helpers
 {
     public class FileHelper
     {
