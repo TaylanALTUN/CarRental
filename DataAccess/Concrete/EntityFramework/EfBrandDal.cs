@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfBrandDal:EfEntityRepositoryBase<Brand,ReCapProjectRentaCarContex> ,IBrandDal
+    public class EfBrandDal:EfEntityRepositoryBase<Brand, CarRentalContex> ,IBrandDal
     {
         //public List<Brand> GetAll(Expression<Func<Brand, bool>> filter = null)
         //{

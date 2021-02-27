@@ -38,19 +38,19 @@ namespace Business.Concrete
             //ValidationTool.Validate(new BrandValidator(), brand);
 
             _brandDal.Add(brand);
-            return new SuccessResut(Messages.BrandAdded);
+            return new SuccessResult(Messages.BrandAdded);
         }
 
         public IResult Update(Brand brand)
         {
             _brandDal.Update(brand);
-            return new SuccessResut(Messages.BrandUpdated);
+            return new SuccessResult(Messages.BrandUpdated);
         }
 
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
-            return new SuccessResut(Messages.BrandDeleted);
+            return new SuccessResult(Messages.BrandDeleted);
         }
     }
 }

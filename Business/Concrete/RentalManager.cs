@@ -40,7 +40,7 @@ namespace Business.Concrete
             {
                 //ValidationTool.Validate(new RentalValidator(), rental);
                 _rentalDal.Add(rental);
-                return new SuccessResut(Messages.RentalAdded);
+                return new SuccessResult(Messages.RentalAdded);
             }
             return new ErrorResult(Messages.RentalCarRented);
         }
@@ -54,7 +54,7 @@ namespace Business.Concrete
                 else
                 {
                     _rentalDal.Update(rental);
-                    return new SuccessResut(Messages.RentalUpdated);
+                    return new SuccessResult(Messages.RentalUpdated);
                 }
         }
 
@@ -63,7 +63,7 @@ namespace Business.Concrete
             var result = _rentalDal.Get(r => r.CarId == rental.CarId && r.ReturnDate == null);
             if (result == null)
             {
-                return new SuccessResut();
+                return new SuccessResult();
             }
             else
             {
@@ -74,7 +74,7 @@ namespace Business.Concrete
         public IResult DeleteRentalInfo(Rental rental)
         {
                 _rentalDal.Delete(rental);
-                return new SuccessResut(Messages.RentalDeleted);
+                return new SuccessResult(Messages.RentalDeleted);
         }
 
     }

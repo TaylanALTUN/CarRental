@@ -47,20 +47,20 @@ namespace Business.Concrete
             //ValidationTool.Validate(new CarValidator(), car);
 
             _carDal.Add(car);
-            return new SuccessResut(Messages.CarAdded);
+            return new SuccessResult(Messages.CarAdded);
 
         }
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessResut(Messages.CarUpdated);
+            return new SuccessResult(Messages.CarUpdated);
         }
 
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResut(Messages.CarDeleted);
+            return new SuccessResult(Messages.CarDeleted);
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int id)

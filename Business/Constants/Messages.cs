@@ -90,5 +90,17 @@ namespace Business.Constants
         public static string RentalCarNotFound = "Kiralanmış Araç Bulunamadı";
 
         #endregion
+
+        #region CarImage
+        public static string CarImageAdded = "Fotofraf Eklendi";
+        public static string ColoCarImageCantAdd = "Fotofraf Eklenemedi";
+        public static string CarImageUpdated = "Fotofraf Güncellendi";
+        public static string CarImageCantUpdate = "Fotofraf Güncellenemedi";
+        public static string CarImageDeleted = "Fotofraf Silindi";
+        public static string CarImageCantDelete = "Fotofraf Silinemedi";
+        public static string CarImageListed = "Fotofraf listelendi";
+        public static string CarImageCantList = "Fotofraf listelenemdi";
+        public static string CarImageCaountLimitFull = "Fotofraf ekleme limiti aşıldı.";
+        #endregion
     }
 }

@@ -42,19 +42,19 @@ namespace Business.Concrete
             //ValidationTool.Validate(new UserValidator(), user);
 
             _userDal.Add(user);
-            return new SuccessResut(Messages.UserAdded);
+            return new SuccessResult(Messages.UserAdded);
         }
 
         public IResult Update(User user)
         {
             _userDal.Update(user);
-            return new SuccessResut(Messages.UserUpdated);
+            return new SuccessResult(Messages.UserUpdated);
         }
 
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
-            return new SuccessResut(Messages.UserDeleted);
+            return new SuccessResult(Messages.UserDeleted);
         }
 
 

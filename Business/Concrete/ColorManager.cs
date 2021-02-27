@@ -36,19 +36,19 @@ namespace Business.Concrete
             //ValidationTool.Validate(new ColorValidator(), color);
 
             _colorDal.Add(color);
-            return new SuccessResut(Messages.ColorAdded);
+            return new SuccessResult(Messages.ColorAdded);
         }
 
         public IResult Update(Color color)
         {
             _colorDal.Update(color);
-            return new SuccessResut(Messages.ColorUpdated);
+            return new SuccessResult(Messages.ColorUpdated);
         }
 
         public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
-            return new SuccessResut(Messages.ColorDeleted);
+            return new SuccessResult(Messages.ColorDeleted);
         }
     }
 }
